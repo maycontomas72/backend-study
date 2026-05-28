@@ -1,15 +1,25 @@
 const express = require('express');
 
-const router = express.router();
+const router = express.Router();
 
 const db = require('../database/database');
 
 const {
-    listarClientes;
-} = require(../controllers/clientesController);
+    listarClientes,
+    buscarCliente,
+    adicionarCliente,
+    atualizarCliente,
+    removerCliente
+} = require('../controllers/clientesController');
 
 router.get('/clientes', listarClientes);
 
-router.get('/clientes/:nome', buscarCliente);
+router.get('/clientes/:nome', buscarCliente); 
 
-router.post('/cliente', adicionarCliente);
+router.post('/clientes', adicionarCliente);
+
+router.put('/atualizar/:id', atualizarCliente);
+
+router.delete('/remover/:id', removerCliente);
+
+module.exports = router;

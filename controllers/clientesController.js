@@ -19,12 +19,12 @@ function listarClientes(req, res) {
 }
 
 function buscarCliente(req, res) {
-    const nome = req.query.nome;
+    const nome = req.params.nome;
 
 
     db.get(
 
-        'SELECT * FROM clientes WHERE cliente = ?',
+        'SELECT * FROM clientes WHERE nome = ?',
         [nome],
         (erro, cliente) => {
 
@@ -41,6 +41,10 @@ function buscarCliente(req, res) {
 }
 
 function adicionarCliente(req, res) {
+
+  
+    console.log(req.body);
+
     const nome = req.body.nome;
     const wpp = req.body.wpp;
 
@@ -74,11 +78,11 @@ function adicionarCliente(req, res) {
 }
 
 function atualizarCliente(req, res) {
-    const idCliente = req.params.idCliente;
+    const id = req.params.id;
     const ultimaVisita = req.body.ultimaVisita;
 
-    if(!idCliente){
-        res.send(`idCliente não encontrado!`);
+    if(!id){
+        res.send(`id não encontrado!`);
         return;
     };
 
@@ -89,8 +93,8 @@ function atualizarCliente(req, res) {
 
     db.run(
 
-        'UPDATE clientes SET ultimaVisita = ? WHERE idCliente = ?',
-        [ultimaVisita, idCliente],
+        'UPDATE clientes SET ultimaVisita = ? WHERE id = ?',
+        [ultimaVisita, id],
         (erro) => {
 
             if(erro){
@@ -106,12 +110,12 @@ function atualizarCliente(req, res) {
 }
 
 function removerCliente(req, res) {
-    const idCliente = req.params.idCliente;
+    const id = req.params.id;
 
     db.run(
 
-        'DELETE FROM clientes WHERE idCliente = ?',
-        [idCliente],
+        'DELETE FROM clientes WHERE id = ?',
+        [id],
         (erro) =>{
 
             if(erro){
