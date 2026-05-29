@@ -18,8 +18,8 @@ router.get('/clientes/:nome', buscarCliente);
 
 router.post('/clientes', adicionarCliente);
 
-router.put('/atualizar/:id', atualizarCliente);
+router.put('/clientes/:id', atualizarCliente);
 
-router.delete('/remover/:id', removerCliente);
+router.delete('/clientes/:id', removerCliente);
 
 module.exports = router;

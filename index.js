@@ -10,8 +10,12 @@ app.listen(3000, () => {
 
 const clientesRoutes = require('./routes/clientes');
 
+const servicosRoutes = require('./routes/servicos');
+
 app.use(express.json());
 
 app.use('/', clientesRoutes);
+
+app.use('/', servicosRoutes);
     
  

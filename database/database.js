@@ -4,14 +4,22 @@ const db = new sqlite3.Database('./database/banco.db');
 
 db.serialize(() => {
 
-   db.run(`
+  db.run(`
     CREATE TABLE IF NOT EXISTS clientes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       nome TEXT,
-      wpp TEXT,
-      carro TEXT,
-      placa TEXT,
-      ultimaVisita TEXT
+      wpp TEXT
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS servicos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      clienteId INTEGER,
+      servico TEXT,
+      valor REAL,
+      km INTEGER,
+      data TEXT
     )
   `);
 

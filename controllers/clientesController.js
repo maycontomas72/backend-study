@@ -14,7 +14,7 @@ function listarClientes(req, res) {
             }
 
         res.send(linhas);
-        }
+        }   
     );
 }
 
@@ -41,9 +41,6 @@ function buscarCliente(req, res) {
 }
 
 function adicionarCliente(req, res) {
-
-  
-    console.log(req.body);
 
     const nome = req.body.nome;
     const wpp = req.body.wpp;
