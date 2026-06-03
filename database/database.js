@@ -23,6 +23,16 @@ db.serialize(() => {
     )
   `);
 
+  db.run(`
+    CREATE TABLE IF NOT EXISTS carros (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    clienteId INTEGER,
+    placa TEXT,
+    marca TEXT,
+    modelo TEXT,
+    ano INTEGER
+    )
+  `)
 });
 
 module.exports = db; 
