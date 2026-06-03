@@ -126,10 +126,11 @@ function removerCliente(req, res) {
     );
 }
 
+
 module.exports = {
     listarClientes,
     buscarCliente,
     adicionarCliente,
     atualizarCliente,
-    removerCliente
+    removerCliente,
 };
