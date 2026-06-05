@@ -19,13 +19,13 @@ function listarClientes(req, res) {
 }
 
 function buscarCliente(req, res) {
-    const nome = req.params.nome;
+    const id = req.params.id;
 
 
     db.get(
 
-        'SELECT * FROM clientes WHERE nome = ?',
-        [nome],
+        'SELECT * FROM clientes WHERE id = ?',
+        [id],
         (erro, cliente) => {
 
             if(erro){
@@ -109,11 +109,16 @@ function atualizarCliente(req, res) {
 function removerCliente(req, res) {
     const id = req.params.id;
 
+
     db.run(
 
         'DELETE FROM clientes WHERE id = ?',
         [id],
-        (erro) =>{
+        (erro) => {
+
+            if(!id){
+                res.send(`Cliente não encontrado!`);
+            };
 
             if(erro){
                 

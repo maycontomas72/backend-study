@@ -19,7 +19,8 @@ db.serialize(() => {
       servico TEXT,
       valor REAL,
       km INTEGER,
-      data TEXT
+      data TEXT,
+      placa TEXT
     )
   `);
 

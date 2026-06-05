@@ -50,13 +50,13 @@ function listarCarros(req, res){
 
 function buscarCarro(req, res){
 
-    const id = req.params.id;
+    const placa = req.params.placa;
 
     db.get(
 
-        'SELECT * FROM carros WHERE id = ?',
+        'SELECT * FROM carros WHERE placa = ?',
 
-        [id],
+        [placa],
 
         (erro, carro) => {
 
@@ -92,9 +92,83 @@ function removerCarro(req, res){
     );
 }
 
+function historicoCarro(req, res){
+
+    const placa = req.params.placa;
+
+    db.get(
+
+        'SELECT * FROM carros WHERE placa = ?',
+        [placa],
+        (erro, carro) => {
+
+            if(erro){
+                res.send(`Erro ao buscar veiculo!`);
+                return;
+            };
+
+            if(!carro){
+                res.send(`Veiculo não encontrado!`);
+                return;
+            };
+
+            if(carro){
+
+                db.get(
+
+                    'SELECT * FROM clientes WHERE id = ?',
+                    [carro.clienteId],
+                    (erro, cliente) => {
+
+                        if(erro){
+                            res.send(`Erro ao encontrar cliente!`);
+                            return;
+                        };
+
+                        if(!cliente){
+                            res.send(`Cliente não encontrado!`);
+                            return;
+                        };
+
+                        if(cliente){
+                            
+                            db.all(
+
+                                'SELECT * FROM servicos WHERE placa = ?',
+                                [placa],
+                                (erro, servicos) => {
+
+                                    if(erro){
+                                        res.send(`Erro ao encontrar serviços!`);
+                                        return;
+                                    };
+
+                                    if(!servicos){
+                                        res.send(`Erro ao encontrar serviços!`);
+                                        return;
+                                    };
+                                    
+                                    const resultado = {
+                                        carro : carro,
+                                        cliente : cliente,
+                                        servicos : servicos
+                                    };
+
+                                    res.send(resultado);
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+        }
+    );    
+}
+
 module.exports = {
     adicionarCarro,
     listarCarros,
     buscarCarro,
-    removerCarro
+    removerCarro,
+    historicoCarro
 };

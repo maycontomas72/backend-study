@@ -15,7 +15,7 @@ const {
 
 router.get('/clientes', listarClientes);
 
-router.get('/clientes/:nome', buscarCliente); 
+router.get('/clientes/:id', buscarCliente); 
 
 router.post('/clientes', adicionarCliente);
 

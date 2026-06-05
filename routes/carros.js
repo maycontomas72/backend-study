@@ -8,7 +8,8 @@ const {
    listarCarros,
    buscarCarro,
    adicionarCarro,
-   removerCarro
+   removerCarro,
+   historicoCarro
 } = require('../controllers/carrosController');
 
 router.get('/carros', listarCarros);
@@ -18,5 +19,7 @@ router.get('/carros/:placa', buscarCarro);
 router.post('/carros', adicionarCarro);
 
 router.delete('/carros/:placa', removerCarro);
+
+router.get('/carros/historico/:placa', historicoCarro);
 
 module.exports = router;

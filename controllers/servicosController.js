@@ -6,14 +6,15 @@ function adicionarServico(req, res){
     const data = req.body.data;
     const valor = req.body.valor;
     const km = req.body.km;
+    const placa = req.body.placa;
 
     db.run(
 
     `INSERT INTO servicos
-    (clienteId, servico, km, valor, data)
-    VALUES (?, ?, ?, ?, ?)`,
+    (clienteId, servico, km, valor, data, placa)
+    VALUES (?, ?, ?, ?, ?, ?)`,
 
-    [clienteId, servico, km, valor, data],
+    [clienteId, servico, km, valor, data, placa],
 
     (erro) => {
 
@@ -124,7 +125,7 @@ function historicoCliente(req, res) {
                 res.send(`Cliente não encontrado!`);
                 return;
             }
-            
+
             if(cliente){
 
                 db.all(
