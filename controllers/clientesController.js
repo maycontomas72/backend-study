@@ -60,7 +60,7 @@ function adicionarCliente(req, res) {
 
         'INSERT INTO clientes (nome, wpp) VALUES (?, ?)',
         [nome, wpp],
-        (erro) =>{
+        function (erro){
 
             if(erro){
                 
@@ -68,8 +68,11 @@ function adicionarCliente(req, res) {
                 return;
             };
 
-            res.send(`Cliente adicionado!`);
-
+            res.send({
+                id : this.lastID,
+                nome : nome,
+                wpp : wpp
+            });
         }
     );    
 }
@@ -115,11 +118,6 @@ function removerCliente(req, res) {
         'DELETE FROM clientes WHERE id = ?',
         [id],
         (erro) => {
-
-            if(!id){
-                res.send(`Cliente não encontrado!`);
-            };
-
             if(erro){
                 
                 res.send(`Erro ao remover cliente!`);

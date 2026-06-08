@@ -1,11 +1,10 @@
-const arr = [1, 2, 3, 2, 4, 3];
-const contagem = {}
+const nums = [10, 20, 30, 40, 50];
 
-arr.forEach((arr) => {
-if(contagem[arr]){
-    contagem[arr] = contagem[arr] + 1;
-} else {
-    contagem[arr] = 1
+let contagem = 0
+
+for(const num of nums){
+    contagem++
 }
-});
+
 console.log(contagem);
+

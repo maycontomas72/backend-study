@@ -13,35 +13,48 @@ botao.addEventListener('click', async () => {
         const dados = await resposta.json();
 
         const resultado = document.getElementById('resultado');
-        console.log(dados.servicos);
+
+        let listaServicos = '';
 
         for (let servico of dados.servicos) {
 
-    console.log(servico);
+             console.log(servico);
 
-}
-
-resultado.innerHTML = `
-    <h2>Cliente</h2>
-    <p>Nome: ${dados.cliente.nome}</p>
-    <p>WhatsApp: ${dados.cliente.wpp}</p>
-
-    <h2>Carro</h2>
-    <p>Placa: ${dados.carro.placa}</p>
-    <p>Marca: ${dados.carro.marca}</p>
-    <p>Modelo: ${dados.carro.modelo}</p>
-    <p>Ano: ${dados.carro.ano}</p>
+            listaServicos += `
+    <div class="card">
+        <p><strong>Serviço:</strong> ${servico.servico}</p>
+        <p><strong>Valor:</strong> R$ ${servico.valor}</p>
+        <p><strong>KM:</strong> ${servico.km}</p>
+        <p><strong>Data:</strong> ${servico.data}</p>
+    </div>
 `;
+        }
 
-        
+        resultado.innerHTML = `
+    <div class="card">
+        <h2>Cliente</h2>
+        <p><strong>Nome:</strong> ${dados.cliente.nome}</p>
+        <p><strong>WhatsApp:</strong> ${dados.cliente.wpp}</p>
+    </div>
 
-        console.log(dados);
+    <div class="card">
+        <h2>Veículo</h2>
+        <p><strong>Placa:</strong> ${dados.carro.placa}</p>
+        <p><strong>Marca:</strong> ${dados.carro.marca}</p>
+        <p><strong>Modelo:</strong> ${dados.carro.modelo}</p>
+        <p><strong>Ano:</strong> ${dados.carro.ano}</p>
+    </div>
+
+    <div class="card">
+        <h2>Histórico de Serviços</h2>
+        ${listaServicos}
+    </div>
+`;
 
     } catch (erro) {
 
         console.log(erro);
 
     }
-    
 
 });
