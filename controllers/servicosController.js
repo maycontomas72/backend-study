@@ -137,12 +137,12 @@ function historicoCliente(req, res) {
                         if(erro){
                             res.send(`Serviços não encontrados!`);
                             return;
-                        }
+                        };
 
                         const resultado = {
                             cliente : cliente,
                             servicos : servicos
-                        }
+                        };
 
                         res.send(resultado);
                     }

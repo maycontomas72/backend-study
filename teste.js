@@ -1,10 +1,14 @@
-const nums = [10, 20, 30, 40, 50];
+const nums = [4, 7, 2, 9, 1];
 
-let contagem = 0
+let encontrou = false
 
 for(const num of nums){
-    contagem++
-}
+    if(num === 7){
+        encontrou = true
+    };
+    }
 
-console.log(contagem);
+    console.log(encontrou);
+
+
 

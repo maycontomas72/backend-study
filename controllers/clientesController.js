@@ -46,21 +46,42 @@ function adicionarCliente(req, res) {
     const wpp = req.body.wpp;
 
     if(!nome){
-        res.send(`Nome não encontrado!`);
+        res.send(`Nome não preenchido!`);
         return
     };
 
     if(!wpp){
-        res.send(`WhatsApp não encontrado!`);
+        res.send(`WhatsApp não preenchido!`);
         return
     };
 
+    db.get(
 
-    db.run(
+        'SELECT * FROM clientes WHERE wpp = ?',
+        [wpp],
+        (erro, cliente) => {
 
-        'INSERT INTO clientes (nome, wpp) VALUES (?, ?)',
-        [nome, wpp],
-        function (erro){
+            if(erro){
+                res.send("Erro ao buscar cliente");
+                return;
+            };
+
+            if(cliente){
+                res.send({
+                    id : cliente.id,
+                    nome : cliente.nome,
+                    wpp : cliente.wpp
+                });
+                
+                return;
+            };
+
+            db.run(
+        
+        
+            'INSERT INTO clientes (nome, wpp) VALUES (?, ?)',
+            [nome, wpp],
+            function (erro){
 
             if(erro){
                 
@@ -73,8 +94,9 @@ function adicionarCliente(req, res) {
                 nome : nome,
                 wpp : wpp
             });
+        });       
         }
-    );    
+    );   
 }
 
 function atualizarCliente(req, res) {
