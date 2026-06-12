@@ -1,8 +1,8 @@
-const botao = document.getElementById('buscar');
+const botaoBuscar = document.getElementById('buscar');
 
-botao.addEventListener('click', async () => {
+botaoBuscar.addEventListener('click', async () => {
 
-    const placa = document.getElementById('placa').value;
+    const placa = document.getElementById('placaBusca').value;
 
     try {
 

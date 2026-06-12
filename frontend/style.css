@@ -1,3 +1,16 @@
+.container{
+    display:flex;
+    gap:30px;
+}
+
+.novo-atendimento{
+    width:50%;
+}
+
+.historico{
+    width:50%;
+}
+
 body {
     font-family: Arial, sans-serif;
     max-width: 900px;
