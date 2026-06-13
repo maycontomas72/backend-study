@@ -10,7 +10,8 @@ const {
     buscarServico,
     removerServico,
     listarServicosCliente,
-    historicoCliente
+    historicoCliente,
+    removerUltimoServico
 } = require('../controllers/servicosController');
 
 router.get('/servicos', listarServicos);
@@ -20,6 +21,8 @@ router.get('/servicos/:id', buscarServico);
 router.post('/servicos', adicionarServico);
 
 router.delete('/servicos/:id', removerServico);
+
+router.delete('/servicos/ultimo/:placa', removerUltimoServico);
 
 router.get('/clientes/:id/servicos', listarServicosCliente);
 

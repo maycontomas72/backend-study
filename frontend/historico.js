@@ -2,7 +2,7 @@ const botaoBuscar = document.getElementById('buscar');
 
 botaoBuscar.addEventListener('click', async () => {
 
-    const placa = document.getElementById('placaBusca').value;
+    const placa = document.getElementById('placaBusca').value;  
 
     try {
 
@@ -48,8 +48,33 @@ botaoBuscar.addEventListener('click', async () => {
     <div class="card">
         <h2>Histórico de Serviços</h2>
         ${listaServicos}
+
+         <button id="excluirUltimo">
+    🗑 Excluir último serviço
+</button>
+
+
     </div>
 `;
+
+const botaoExcluir = document.getElementById('excluirUltimo');
+
+botaoExcluir.addEventListener('click', async () => {
+
+    
+
+    const resposta = await fetch(
+        `http://localhost:3000/servicos/ultimo/${placa}`,
+        {
+            method: 'DELETE'
+        }
+    );
+
+    const mensagem = await resposta.text();
+
+    alert(mensagem);
+
+});
 
     } catch (erro) {
 

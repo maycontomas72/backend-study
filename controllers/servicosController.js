@@ -109,6 +109,7 @@ function listarServicosCliente(req, res){
 function historicoCliente(req, res) {
     
     const id = req.params.id;
+    const placa = req.body.placa;
 
 
     db.get(
@@ -130,7 +131,7 @@ function historicoCliente(req, res) {
 
                 db.all(
 
-                    'SELECT * FROM servicos WHERE id = ?',
+                    'SELECT * FROM servicos WHERE id = ? ORDER BY id DESC',
                     [id],
                     (erro, servicos) => {
 
@@ -152,6 +153,50 @@ function historicoCliente(req, res) {
     );
 }
 
+function removerUltimoServico(req, res){
+
+    const placa = req.params.placa;
+
+    db.get(
+
+        `SELECT id FROM servicos WHERE placa = ?
+        ORDER BY id DESC LIMIT 1`,
+        [placa],
+        (erro, servico) => {
+
+            if(erro){
+                res.send("Erro ao buscar o ultimo serviço para remoção!");
+                return;
+            }
+
+            if(!servico){
+                res.send("O cliente não possui serviço registrado!");
+                return;
+            }
+
+            if(servico){
+
+                db.run(
+
+                    'DELETE FROM servicos WHERE id = ?',
+                    [servico.id],
+                    (erro) => {
+
+                        if(erro){
+                            res.send("Erro ao remover o último serviço!");
+                            return;
+                        }
+
+                        res.send("Último serviço removido!");
+                    }
+                );
+            }
+        }
+
+    );
+
+}
+
 
 module.exports = {
     adicionarServico,
@@ -160,4 +205,5 @@ module.exports = {
     removerServico,
     listarServicosCliente,
     historicoCliente,
+    removerUltimoServico
 }

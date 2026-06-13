@@ -43,7 +43,7 @@ function adicionarAtendimento(req, res){
             }
 
             if(carro){
-                console.log(carro);
+                
 
                 db.run(
 
@@ -64,7 +64,7 @@ function adicionarAtendimento(req, res){
     }
 );
             }else{
-                console.log("clienteId antes do insert:", clienteId);
+            
 
                 db.run(
 
@@ -77,8 +77,7 @@ function adicionarAtendimento(req, res){
                             return;
                         }
 
-                        
-                        console.log("veiculo incluido no sistema!");
+
 
                         db.run(
 
@@ -120,7 +119,7 @@ function adicionarAtendimento(req, res){
                     }
 
                     clienteId = this.lastID;
-                    console.log(clienteId);
+                    
                     db.get(
 
                         'SELECT * FROM carros WHERE placa = ?',
@@ -133,7 +132,7 @@ function adicionarAtendimento(req, res){
             }
 
             if(carro){
-                console.log(carro);
+              
 
                 db.run(
 
@@ -154,7 +153,7 @@ function adicionarAtendimento(req, res){
     }
 );
             }else{
-                console.log("clienteId antes do insert:", clienteId);
+
 
                 db.run(
 
@@ -167,7 +166,6 @@ function adicionarAtendimento(req, res){
                             return;
                         }
 
-                        console.log("veiculo incluido no sistema!");
 
                         db.run(
 

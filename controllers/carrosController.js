@@ -18,7 +18,6 @@ function adicionarCarro(req, res) {
 
         (erro) => {
 
-            console.log(erro);
 
             if(erro){
                 res.send('Erro ao adicionar carro!');
