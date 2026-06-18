@@ -51,8 +51,31 @@ function contagemServicos(req, res){
     );
 }
 
+function periodoData(req, res){
+    const dataInicial = req.body.dataInicial;
+    const dataFinal = req.body.dataFinal;
+
+    db.all(
+
+        'SELECT * FROM servicos WHERE data >= ? AND data <= ?',
+        [dataInicial, dataFinal],
+        (erro, servicos) => {
+
+            if(erro){
+                res.send("Erro ao buscar a data!");
+                return;
+            }
+
+            res.send(servicos);
+
+
+        }
+    );
+}
+
 module.exports = {
     contagemClientes,
     contagemCarros,
-    contagemServicos
+    contagemServicos,
+    periodoData
 };

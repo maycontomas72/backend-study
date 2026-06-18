@@ -74,6 +74,10 @@ botaoExcluir.addEventListener('click', async () => {
 
     alert(mensagem);
 
+    await carregarDashboard();
+
+    botaoBuscar.click();
+
 });
 
     } catch (erro) {
