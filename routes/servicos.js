@@ -26,6 +26,6 @@ router.delete('/servicos/ultimo/:placa', removerUltimoServico);
 
 router.get('/clientes/:id/servicos', listarServicosCliente);
 
-router.get('/clientes/:id/historico', historicoCliente);
+router.get('/clientes/:nome/historico', historicoCliente);
 
 module.exports = router;

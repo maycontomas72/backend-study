@@ -108,47 +108,50 @@ function listarServicosCliente(req, res){
 
 function historicoCliente(req, res) {
     
-    const id = req.params.id;
-    const placa = req.body.placa;
+    const nome = req.params.nome;
 
+    db.all(
 
-    db.get(
+        'SELECT clientes.nome, carros.placa, clientes.wpp FROM clientes JOIN carros ON clientes.id = carros.clienteId WHERE clientes.nome LIKE ?',
+        [`%${nome}%`],
+        (erro, linhas) => {
 
-        'SELECT * FROM clientes WHERE id = ?',
-        [id],
-        (erro, cliente) => {
-            if(erro){
-                res.send(`Cliente não encontrado!`);
-                return;
-            }
-            
-            if(!cliente){
-                res.send(`Cliente não encontrado!`);
+            if (erro) {
+                res.send("Erro ao fazer a busca!");
                 return;
             }
 
-            if(cliente){
+            if (linhas.length === 0) {
+                res.send("Nenhum dado encontrado!");
+                return;
+            }
 
-                db.all(
+            res.send(linhas);
+        }
+    );
+}
 
-                    'SELECT * FROM servicos WHERE id = ? ORDER BY id DESC',
-                    [id],
-                    (erro, servicos) => {
+function historicoCliente(req, res) {
+    
+    const nome = req.params.nome;
 
-                        if(erro){
-                            res.send(`Serviços não encontrados!`);
-                            return;
-                        };
+    db.all(
 
-                        const resultado = {
-                            cliente : cliente,
-                            servicos : servicos
-                        };
+        'SELECT clientes.nome, carros.placa, clientes.wpp FROM clientes JOIN carros ON clientes.id = carros.clienteId WHERE clientes.nome LIKE ?',
+        [`%${nome}%`],
+        (erro, linhas) => {
 
-                        res.send(resultado);
-                    }
-                );
-            }   
+            if (erro) {
+                res.send("Erro ao fazer a busca!");
+                return;
+            }
+
+            if (linhas.length === 0) {
+                res.send("Nenhum dado encontrado!");
+                return;
+            }
+
+            res.send(linhas);
         }
     );
 }

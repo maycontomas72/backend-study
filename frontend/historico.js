@@ -87,3 +87,35 @@ botaoExcluir.addEventListener('click', async () => {
     }
 
 });
+
+const botaoBuscarNome =
+    document.getElementById('buscarNome');
+
+botaoBuscarNome.addEventListener('click', async () => {
+
+    const nome =
+        document.getElementById('nomeBusca').value;
+
+    const resposta = await fetch(
+        `http://localhost:3000/clientes/${nome}/historico`
+    );
+
+    const dados = await resposta.json();
+
+    const resultado =
+        document.getElementById('resultadoNome');
+
+    resultado.innerHTML = '';
+
+    for(const cliente of dados){
+
+        resultado.innerHTML += `
+            <div class="card">
+                <p><strong>Nome:</strong> ${cliente.nome}</p>
+                <p><strong>WhatsApp:</strong> ${cliente.wpp}</p>
+                <p><strong>Placa:</strong> ${cliente.placa}</p>
+            </div>
+        `;
+    }
+
+});
