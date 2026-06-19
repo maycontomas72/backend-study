@@ -151,6 +151,33 @@ function removerCliente(req, res) {
     );
 }
 
+function clientesInativos(req, res){
+    console.log("entrou");
+
+    db.all(
+
+        `
+        SELECT clientes.nome, clientes.wpp, MAX(servicos.data) AS ultimaVisita
+        FROM clientes
+        JOIN carros
+        ON clientes.id = carros.clienteId
+        JOIN servicos
+        ON carros.placa = servicos.placa
+        GROUP BY clientes.id
+        HAVING ultimaVisita < DATE('now', '-6 months')`,
+        [],
+        (erro, clientes) => {
+
+            if(erro){
+                res.send("Erro ao buscar clientes");
+                return;
+            }
+
+            res.send(clientes);
+
+        }
+    );
+}
 
 module.exports = {
     listarClientes,
@@ -158,4 +185,5 @@ module.exports = {
     adicionarCliente,
     atualizarCliente,
     removerCliente,
+    clientesInativos
 };

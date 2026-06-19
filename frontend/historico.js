@@ -119,3 +119,32 @@ botaoBuscarNome.addEventListener('click', async () => {
     }
 
 });
+
+const botaoInativos =
+    document.getElementById('buscarInativos');
+
+botaoInativos.addEventListener('click', async () => {
+
+    const resposta = await fetch(
+        'http://localhost:3000/clientes/inativos'
+    );
+
+    const dados = await resposta.json();
+
+    const resultado =
+        document.getElementById('resultadoInativos');
+
+    resultado.innerHTML = '';
+
+    for(const cliente of dados){
+
+        resultado.innerHTML += `
+            <div class="card">
+                <p><strong>Nome:</strong> ${cliente.nome}</p>
+                <p><strong>WhatsApp:</strong> ${cliente.wpp}</p>
+                <p><strong>Última visita:</strong> ${cliente.ultimaVisita}</p>
+            </div>
+        `;
+    }
+
+});
