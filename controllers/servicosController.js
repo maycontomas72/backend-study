@@ -79,8 +79,12 @@ function removerServico(req, res){
         'DELETE FROM servicos WHERE id =?',
         [id],
         (erro) => {
+
+            if(erro){
+
             res.send(`Erro ao remover o serviço!`);
             return;
+            }
 
             res.send(`Serviço removido!`);
 
@@ -100,31 +104,6 @@ function listarServicosCliente(req, res){
                 res.send(`Erro ao listar serviços!`);
                 return;
             };
-
-            res.send(linhas);
-        }
-    );
-}
-
-function historicoCliente(req, res) {
-    
-    const nome = req.params.nome;
-
-    db.all(
-
-        'SELECT clientes.nome, carros.placa, clientes.wpp FROM clientes JOIN carros ON clientes.id = carros.clienteId WHERE clientes.nome LIKE ?',
-        [`%${nome}%`],
-        (erro, linhas) => {
-
-            if (erro) {
-                res.send("Erro ao fazer a busca!");
-                return;
-            }
-
-            if (linhas.length === 0) {
-                res.send("Nenhum dado encontrado!");
-                return;
-            }
 
             res.send(linhas);
         }

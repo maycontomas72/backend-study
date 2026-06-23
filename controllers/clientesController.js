@@ -9,17 +9,23 @@ function listarClientes(req, res) {
         (erro, linhas) => {
 
             if(erro){
-                res.send(`Clientes não encontrados!`);
+                res.status(500).send(`Clientes não encontrados!`);
                 return;
             }
 
-        res.send(linhas);
+        res.status(200).send(linhas);
         }   
     );
 }
 
 function buscarCliente(req, res) {
     const id = req.params.id;
+
+    if(!id){
+
+        res.status(400).send("Id não encontrado!");
+        return;
+    }
 
 
     db.get(
@@ -29,12 +35,12 @@ function buscarCliente(req, res) {
         (erro, cliente) => {
 
             if(erro){
-                res.send(`Cliente não encontrado!`);
+                res.status(500).send(`Cliente não encontrado!`);
                 return;
             };
 
 
-        res.send(cliente);
+        res.status(200).send(cliente);
 
         }
     );
@@ -46,12 +52,12 @@ function adicionarCliente(req, res) {
     const wpp = req.body.wpp;
 
     if(!nome){
-        res.send(`Nome não preenchido!`);
+        res.status(400).send(`Nome não preenchido!`);
         return
     };
 
     if(!wpp){
-        res.send(`WhatsApp não preenchido!`);
+        res.status(400).send(`WhatsApp não preenchido!`);
         return
     };
 
@@ -62,12 +68,12 @@ function adicionarCliente(req, res) {
         (erro, cliente) => {
 
             if(erro){
-                res.send("Erro ao buscar cliente");
+                res.status(500).send("Erro ao buscar cliente");
                 return;
             };
 
             if(cliente){
-                res.send({
+                res.status(200).send({
                     id : cliente.id,
                     nome : cliente.nome,
                     wpp : cliente.wpp
@@ -85,11 +91,11 @@ function adicionarCliente(req, res) {
 
             if(erro){
                 
-                res.send(`Erro ao adicionar cliente!`);
+                res.status(500).send(`Erro ao adicionar cliente!`);
                 return;
             };
 
-            res.send({
+            res.status(201).send({
                 id : this.lastID,
                 nome : nome,
                 wpp : wpp
@@ -104,12 +110,12 @@ function atualizarCliente(req, res) {
     const ultimaVisita = req.body.ultimaVisita;
 
     if(!id){
-        res.send(`id não encontrado!`);
+        res.status(400).send(`id não encontrado!`);
         return;
     };
 
     if(!ultimaVisita){
-        res.send(`Última visita não registrada!`);
+        res.status(400).send(`Última visita não registrada!`);
         return;
     };
 
@@ -121,11 +127,11 @@ function atualizarCliente(req, res) {
 
             if(erro){
                 
-                res.send(`Erro ao atualizar a última visita!`);
+                res.status(500).send(`Erro ao atualizar a última visita!`);
                 return;
             };
 
-        res.send(`Próxima revisão atualizada!`);
+        res.status(200).send(`Próxima revisão atualizada!`);
 
         }
     );
@@ -134,25 +140,42 @@ function atualizarCliente(req, res) {
 function removerCliente(req, res) {
     const id = req.params.id;
 
+    if(!id){
+        res.status(400).send('Id não preenchido!');
+        return;
+    }
+
 
     db.run(
 
         'DELETE FROM clientes WHERE id = ?',
         [id],
-        (erro) => {
+        function (erro){
             if(erro){
-                
-                res.send(`Erro ao remover cliente!`);
+
+                res.status(500).send("Erro ao remover cliente!");
                 return;
-            };
-        
-            res.send(`Cliente removido!`);
+
+            }else{
+
+                if(this.changes === 0){
+
+                    res.status(404).send("Cliente não encontrado");
+                    return;
+
+                }
+
+                
+            res.status(200).send("Cliente removido!");
+
+                
+            }
         }
     );
 }
 
 function clientesInativos(req, res){
-    console.log("entrou");
+
 
     db.all(
 
@@ -169,11 +192,11 @@ function clientesInativos(req, res){
         (erro, clientes) => {
 
             if(erro){
-                res.send("Erro ao buscar clientes");
+                res.status(500).send("Erro ao buscar clientes");
                 return;
             }
 
-            res.send(clientes);
+            res.status(200).send(clientes);
 
         }
     );

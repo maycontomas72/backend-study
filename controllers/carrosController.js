@@ -20,11 +20,11 @@ function adicionarCarro(req, res) {
 
 
             if(erro){
-                res.send('Erro ao adicionar carro!');
+                res.status(500).send('Erro ao adicionar carro!');
                 return;
             }
 
-            res.send('Carro adicionado!');
+            res.status(201).send('Carro adicionado!');
         }
     );
 }

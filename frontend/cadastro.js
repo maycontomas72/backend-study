@@ -2,9 +2,9 @@ const botaoSalvar = document.getElementById('salvar');
 
 botaoSalvar.addEventListener('click', async () => {
 
-    const nome = document.getElementById('nome').value;
-    const wpp = document.getElementById('wpp').value;
-    const placa = document.getElementById('placa').value;
+    const nome = document.getElementById('nome').value.toUpperCase();
+    const wpp = document.getElementById('wpp').value.replace(/\D/g, '');
+    const placa = document.getElementById('placa').value.toUpperCase();
     const marca = document.getElementById('marca').value;
     const modelo = document.getElementById('modelo').value;
     const ano = document.getElementById('ano').value;
