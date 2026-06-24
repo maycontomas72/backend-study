@@ -1,202 +1,86 @@
 const db = require('../database/database'); 
 
 
-function adicionarAtendimento(req, res){
-
-    let clienteId;
-    const nome = req.body.nome;
-    const wpp = req.body.wpp;
-    const placa = req.body.placa;
-    const marca = req.body.marca;
-    const modelo = req.body.modelo;
-    const ano = req.body.ano;
-    const servico = req.body.servico;
-    const valor = req.body.valor;
-    const km = req.body.km;
-    const data = req.body.data;
-    
-
-
-    db.get(
-
-        'SELECT * FROM clientes WHERE wpp = ?',
-        [wpp],
-        (erro, cliente) => {
-
-            if(erro){
-                res.send("Erro ao buscar cliente!");
-                return;
-            }
-
-            if(cliente){
-                clienteId = cliente.id; 
-                
-                db.get(
-
-                    'SELECT * FROM carros WHERE placa = ?',
-        [placa],
-        (erro, carro) =>{
-            
-            if(erro){
-                res.send("Erro ao buscar veiculo!");
-                return;
-            }
-
-            if(carro){
-                
-
-                db.run(
-
-    `INSERT INTO servicos
-    (clienteId, servico, km, valor, data, placa)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-
-    [clienteId, servico, km, valor, data, placa],
-
-    (erro) => {
-
+function getAsync(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (erro, resultado) => {
         if(erro){
-            res.send('Erro ao adicionar serviço!');
+            reject(erro);
             return;
-        };
-
-        res.send('Serviço adicionado!');
-    }
-);
-            }else{
-            
-
-                db.run(
-
-                    'INSERT INTO carros(clienteId, placa, marca, modelo, ano) VALUES(?, ?, ?, ?, ?)',
-                    [clienteId, placa, marca, modelo, ano],
-                    (erro) => {
-
-                        if(erro){
-                            res.send("Erro ao adicionar veiculo!");
-                            return;
-                        }
-
-
-
-                        db.run(
-
-    `INSERT INTO servicos
-    (clienteId, servico, km, valor, data, placa)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-
-    [clienteId, servico, km, valor, data, placa],
-
-    (erro) => {
-
-        if(erro){
-            res.send('Erro ao adicionar serviço!');
-            return;
-        };
-
-        res.send('Serviço adicionado!');
-    }
-);
-                        
-                    }
-                    
-                );
-            }
         }
-                );
+
+        resolve(resultado);
+
+    })
+  })
+};
+
+function runAsync(sql, params) {
+    return new Promise((resolve, reject) => {
+        db.run(sql, params, function (erro){
+            if(erro){
+                reject(erro);
+                return;
+            }
+
+            resolve(this)
+        })
+    })
+  }
+
+async function adicionarAtendimento(req, res){
+    const {nome, wpp, placa, marca, modelo, ano, servico, valor, km, data} = req.body;
+
+    const informacoes = ['nome', 'wpp', 'placa', 'servico', 'data'];
+
+    for(const dados of informacoes)
+
+        if(!req.body[dados]){
+
+            res.status(400).send(`Campo ${dados} não preenchido!`);
+            return;
+
+        }
+
+    try{
+
+        let clienteId;
+
+        let cliente = await getAsync (`SELECT * FROM clientes WHERE wpp = ?`, [wpp])
+
+        if(!cliente){
+            
+            const resultado = await runAsync(`INSERT INTO clientes (nome, wpp) 
+                VALUES(?, ?)`, 
+                [nome, wpp])
+
+                clienteId = resultado.lastID;
 
             } else {
 
-            db.run(
+                clienteId = cliente.id;
 
-                'INSERT INTO clientes(nome, wpp) VALUES(?, ?)',
-                [nome, wpp],
-                function(erro){
-
-                    if(erro){
-                        res.send("erro ao adicionar cliente!");
-                        return;
-                    }
-
-                    clienteId = this.lastID;
-                    
-                    db.get(
-
-                        'SELECT * FROM carros WHERE placa = ?',
-        [placa],
-        (erro, carro) =>{
-            
-            if(erro){
-                res.send("Erro ao buscar veiculo!");
-                return;
             }
 
-            if(carro){
-              
+        const carro = await getAsync(`SELECT * FROM carros WHERE placa = ?`, [placa])
 
-                db.run(
+        if(!carro){
+        
+            await runAsync(`INSERT INTO carros(clienteId, placa, marca, modelo, ano) VALUES(?, ?, ?, ?, ?)`,
+        [clienteId, placa, marca, modelo, ano])
 
-    `INSERT INTO servicos
-    (clienteId, servico, km, valor, data, placa)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-
-    [clienteId, servico, km, valor, data, placa],
-
-    (erro) => {
-
-        if(erro){
-            res.send('Erro ao adicionar serviço!');
-            return;
-        };
-
-        res.send('Serviço adicionado!');
-    }
-);
-            }else{
-
-
-                db.run(
-
-                    'INSERT INTO carros(clienteId, placa, marca, modelo, ano) VALUES(?, ?, ?, ?, ?)',
-                    [clienteId, placa, marca, modelo, ano],
-                    (erro) => {
-
-                        if(erro){
-                            res.send("Erro ao adicionar veiculo!");
-                            return;
-                        }
-
-
-                        db.run(
-
-    `INSERT INTO servicos
-    (clienteId, servico, km, valor, data, placa)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-
-    [clienteId, servico, km, valor, data, placa],
-
-    (erro) => {
-
-        if(erro){
-            res.send('Erro ao adicionar serviço!');
-            return;
-        };
-
-        res.send('Serviço adicionado!');
-    }
-);
-                        
-                    }
-                    
-                );
-            }
         }
-                    );
-                }
-            );
-        }   
-        }
-    );
+
+        await runAsync(`INSERT INTO servicos (clienteId, servico, km, valor, data, placa) VALUES (?, ?, ?, ?, ?, ?)`,
+      [clienteId, servico, km, valor, data, placa])
+
+      res.status(201).send("Serviço incluido com sucesso!");
+
+    } catch (erro) {
+
+        res.status(500).send("Erro interno ao adicionar atendimento!");
+
+    }
 }
 
 module.exports = {
