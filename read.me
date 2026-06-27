@@ -1,0 +1,74 @@
+# API REST de Gestão de Atendimentos para Car Center
+
+Sistema para oficinas mecânicas com foco na retenção de clientes inativos.
+Organiza clientes, veículos e serviços, e identifica quem não retorna há mais
+de 6 meses.
+
+## Tecnologias
+
+- Node.js
+- Express
+- SQLite
+
+## Como rodar
+
+```bash
+git clone <url-do-repositório>
+cd backend-estudo
+npm install
+npm start
+```
+
+O servidor inicia em `http://localhost:3000`.
+
+## Endpoints
+
+## Endpoints
+
+### Clientes
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | /clientes | Lista todos os clientes |
+| GET | /clientes/inativos | Lista clientes sem retorno há mais de 6 meses |
+| GET | /clientes/:id | Busca um cliente por ID |
+| GET | /clientes/:id/servicos | Lista os serviços de um cliente |
+| GET | /clientes/:nome/historico | Histórico de um cliente pelo nome |
+| POST | /clientes | Cria um novo cliente |
+| PUT | /clientes/:id | Atualiza a última visita de um cliente |
+| DELETE | /clientes/:id | Remove um cliente |
+
+### Carros
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | /carros | Lista todos os carros |
+| GET | /carros/:placa | Busca um carro pela placa |
+| GET | /carros/historico/:placa | Histórico de serviços de um carro |
+| POST | /carros | Cadastra um novo carro |
+| DELETE | /carros/:placa | Remove um carro pela placa |
+
+### Serviços
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | /servicos | Lista todos os serviços |
+| GET | /servicos/:id | Busca um serviço por ID |
+| POST | /servicos | Cadastra um novo serviço |
+| DELETE | /servicos/:id | Remove um serviço por ID |
+| DELETE | /servicos/ultimo/:placa | Remove o último serviço de um carro |
+
+### Atendimento
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | /atendimento | Cria um atendimento completo (cliente + carro + serviço) |
+
+### Dashboard
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| GET | /contagem/clientes | Total de clientes cadastrados |
+| GET | /contagem/carros | Total de carros cadastrados |
+| GET | /contagem/servicos | Total de serviços registrados |
+| POST | /servicos/periodo | Serviços filtrados por período de datas |
