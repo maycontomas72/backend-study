@@ -202,11 +202,57 @@ function clientesInativos(req, res){
     );
 }
 
+function listarServicosCliente(req, res){
+    const clienteId = req.params.id;
+
+    db.all(
+
+        'SELECT * FROM servicos WHERE clienteId = ?',
+        [clienteId],
+        (erro, linhas) => {
+            if(erro){
+                res.send(`Erro ao listar serviços!`);
+                return;
+            };
+
+            res.send(linhas);
+        }
+    );
+}
+
+function historicoCliente(req, res) {
+    
+    const nome = req.params.nome;
+
+    db.all(
+
+        'SELECT clientes.nome, carros.placa, clientes.wpp FROM clientes JOIN carros ON clientes.id = carros.clienteId WHERE clientes.nome LIKE ?',
+        [`%${nome}%`],
+        (erro, linhas) => {
+
+            if (erro) {
+                res.send("Erro ao fazer a busca!");
+                return;
+            }
+
+            if (linhas.length === 0) {
+                res.send("Nenhum dado encontrado!");
+                return;
+            }
+
+            res.send(linhas);
+        }
+    );
+}
+
+
 module.exports = {
     listarClientes,
     buscarCliente,
     adicionarCliente,
     atualizarCliente,
     removerCliente,
-    clientesInativos
+    clientesInativos,
+    historicoCliente,
+    listarServicosCliente
 };

@@ -185,7 +185,5 @@ module.exports = {
     listarServicos,
     buscarServico,
     removerServico,
-    listarServicosCliente,
-    historicoCliente,
     removerUltimoServico
 }

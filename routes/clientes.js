@@ -10,19 +10,25 @@ const {
     adicionarCliente,
     atualizarCliente,
     removerCliente,
-    clientesInativos
+    clientesInativos,
+    historicoCliente,
+    listarServicosCliente
 } = require('../controllers/clientesController');
 
 router.get('/clientes', listarClientes);
 
 router.get('/clientes/inativos', clientesInativos)
 
-router.get('/clientes/:id', buscarCliente); 
-
 router.post('/clientes', adicionarCliente);
 
 router.put('/clientes/:id', atualizarCliente);
 
 router.delete('/clientes/:id', removerCliente);
+
+router.get('/clientes/:nome/historico', historicoCliente);
+
+router.get('/clientes/:id/servicos', listarServicosCliente);
+
+router.get('/clientes/:id', buscarCliente); 
 
 module.exports = router;

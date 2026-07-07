@@ -9,8 +9,6 @@ const {
     listarServicos,
     buscarServico,
     removerServico,
-    listarServicosCliente,
-    historicoCliente,
     removerUltimoServico
 } = require('../controllers/servicosController');
 
@@ -20,12 +18,8 @@ router.get('/servicos/:id', buscarServico);
 
 router.post('/servicos', adicionarServico);
 
-router.delete('/servicos/:id', removerServico);
-
 router.delete('/servicos/ultimo/:placa', removerUltimoServico);
 
-router.get('/clientes/:id/servicos', listarServicosCliente);
-
-router.get('/clientes/:nome/historico', historicoCliente);
+router.delete('/servicos/:id', removerServico);
 
 module.exports = router;

@@ -14,12 +14,12 @@ const {
 
 router.get('/carros', listarCarros);
 
-router.get('/carros/:placa', buscarCarro); 
-
 router.post('/carros', adicionarCarro);
 
 router.delete('/carros/:placa', removerCarro);
 
 router.get('/carros/historico/:placa', historicoCarro);
+
+router.get('/carros/:placa', buscarCarro); 
 
 module.exports = router;
