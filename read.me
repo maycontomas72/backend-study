@@ -23,7 +23,6 @@ O servidor inicia em `http://localhost:3000`.
 
 ## Endpoints
 
-## Endpoints
 
 ### Clientes
 
@@ -72,3 +71,19 @@ O servidor inicia em `http://localhost:3000`.
 | GET | /contagem/carros | Total de carros cadastrados |
 | GET | /contagem/servicos | Total de serviços registrados |
 | POST | /servicos/periodo | Serviços filtrados por período de datas |
+
+
+## Testes
+
+O projeto possui testes automatizados com **Jest** e **Supertest**.
+
+```bash
+npm test
+```
+
+Os testes rodam contra um banco SQLite em memória (isolado do banco 
+de produção), garantindo que cada execução comece com dados limpos.
+
+> Cobertura inicial — os testes cobrem os principais fluxos de 
+> criação (`/clientes` e `/atendimento`). Expansão para os demais 
+> endpoints é um próximo passo.
