@@ -2,7 +2,11 @@ const sqlite3 = require('sqlite3').verbose();
 
 const path = require('path');
 
-const db = new sqlite3.Database(path.join(__dirname, 'banco.db')); 
+const caminhoDoBanco = process.env.NODE_ENV === 'test'
+  ? ':memory:'
+  : path.join(__dirname, 'banco.db');
+
+const db = new sqlite3.Database(caminhoDoBanco);
 
 db.serialize(() => {
 
